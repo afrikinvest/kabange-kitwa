@@ -3,259 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TECK COMPANY - INVEST</title>
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <title>DIFC DE DUBAI INVEST | PORTAIL PRIVÉ</title>
+    <!-- Chargement des icônes indispensables -->
+    <link href="https://cloudflare.com" rel="stylesheet">
     <style>
-        :root {
-            --gold: #FFD700;
-            --gold-glow: #ffcc0044;
-            --dark: #050505;
-            --card: #121212;
-            --success: #00ff88;
-            --error: #ff3e3e;
+        /* Thème de couleurs : Noir, Rose et Blanc */
+        :root { 
+            --pink: #ff2a7f; 
+            --dark: #0b0c10; 
+            --card: #1f2026; 
+            --white: #ffffff;
+            --success: #0ecb81; 
+            --gray: #a0a5b5; 
+        }
+        
+        body { margin: 0; font-family: 'Inter', -apple-system, sans-serif; background: var(--dark); color: var(--white); -webkit-tap-highlight-color: transparent; }
+
+        /* NOTIFICATIONS LIVE */
+        #notif-box {
+            position: fixed; top: 15px; left: 5%; width: 90%; background: var(--white); color: var(--dark); 
+            padding: 15px; border-radius: 12px; font-size: 0.85rem; display: none;
+            align-items: center; gap: 12px; z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            animation: slideDown 0.4s ease-out;
         }
 
-        body {
-            background: var(--dark);
-            color: white;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* ANIMATIONS CLIGNOTANTES */
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 5px var(--gold); }
-            50% { box-shadow: 0 0 20px var(--gold); }
-            100% { box-shadow: 0 0 5px var(--gold); }
-        }
-
-        @keyframes blink-text {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .blink { animation: blink-text 1s infinite; }
-
-        /* LOGIN SCREEN */
-        #login-screen {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .glass-card {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 30px;
-            border: 1px solid #222;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .input-gold {
-            width: 90%;
-            background: #000;
-            border: 1px solid var(--gold);
-            padding: 15px;
-            border-radius: 15px;
-            color: var(--gold);
-            text-align: center;
-            font-size: 1.2rem;
-            margin: 20px 0;
-            outline: none;
-        }
+        /* LOGIN */
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .glass-card { background: var(--card); padding: 40px 25px; border-radius: 35px; width: 100%; max-width: 360px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .input-pink { width: 100%; background: #000; border: 1.5px solid #333; padding: 18px; border-radius: 15px; color: var(--pink); font-size: 1.4rem; text-align: center; letter-spacing: 4px; margin: 25px 0; outline: none; box-sizing: border-box; }
 
         /* DASHBOARD */
-        #dashboard {
-            display: none;
-            width: 100%;
-            max-width: 450px;
-            padding-bottom: 90px;
+        #dashboard { display: none; }
+        .top-bar { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 42, 127, 0.2); }
+        .live-dot { height: 10px; width: 10px; background: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1s infinite; }
+
+        .container { padding: 20px; padding-bottom: 100px; }
+        .main-card { background: linear-gradient(145deg, #252731, #0b0c10); padding: 25px; border-radius: 30px; border: 1px solid rgba(255, 42, 127, 0.3); position: relative; }
+        
+        .timer-strip { background: rgba(255, 42, 127, 0.1); border: 1px solid var(--pink); color: var(--pink); padding: 8px; border-radius: 10px; font-size: 0.75rem; font-weight: bold; margin-bottom: 20px; text-align: center; }
+        
+        .info-box { background: rgba(0,0,0,0.4); padding: 18px; border-radius: 20px; margin: 20px 0; font-size: 0.85rem; border-left: 3px solid var(--pink); }
+        .info-line { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .info-line span:first-child { color: var(--gray); }
+
+        .profit-zone { text-align: center; margin: 25px 0; }
+        .profit-val { font-size: 2rem; font-weight: 900; color: var(--pink); display: block; }
+
+        .btn-action {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            background: var(--pink); color: var(--white); text-decoration: none;
+            padding: 22px; border-radius: 20px; font-weight: 900; font-size: 1.1rem;
+            animation: pulse 2s infinite; text-transform: uppercase; border: none; width: 100%; cursor: pointer;
         }
 
-        .header-status {
-            background: #111;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--gold);
-        }
+        /* NAVBAR */
+        .navbar { position: fixed; bottom: 0; width: 100%; background: #15161c; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #252830; z-index: 999; }
+        .nav-link { color: var(--gray); text-decoration: none; font-size: 0.7rem; text-align: center; }
+        .nav-link.active { color: var(--pink); }
+        .nav-link i { display: block; font-size: 1.3rem; margin-bottom: 4px; }
 
-        .status-dot {
-            height: 8px;
-            width: 8px;
-            background-color: var(--success);
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-            box-shadow: 0 0 10px var(--success);
-        }
-
-        .main-card {
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
-            margin: 15px;
-            padding: 25px;
-            border-radius: 25px;
-            border: 1px solid #333;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .price-tag {
-            font-size: 3rem;
-            font-weight: 900;
-            color: white;
-            text-shadow: 0 0 15px rgba(255,255,255,0.3);
-            margin: 10px 0;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #222;
-            font-size: 0.9rem;
-        }
-
-        .label { color: var(--gray); }
-        .value { color: white; font-weight: bold; }
-
-        /* BOUTON RECHARGER CLIGNOTANT */
-        .btn-deposit {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: var(--gold);
-            color: black;
-            text-decoration: none;
-            padding: 20px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 1.2rem;
-            margin: 20px 15px;
-            text-transform: uppercase;
-            animation: pulse-gold 1.5s infinite;
-            border: none;
-            width: calc(100% - 30px);
-            cursor: pointer;
-        }
-
-        .warning-box {
-            background: rgba(255, 62, 62, 0.1);
-            border: 1px solid var(--error);
-            color: var(--error);
-            padding: 15px;
-            margin: 15px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            text-align: center;
-        }
-
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 450px;
-            background: #000;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #222;
-        }
-
-        .nav-item { color: #555; text-decoration: none; font-size: 0.7rem; text-align: center; }
-        .nav-item.active { color: var(--gold); }
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
     </style>
 </head>
 <body>
 
+    <div id="notif-box">
+        <i class="fas fa-check-circle" style="color:var(--success); font-size:1.4rem;"></i>
+        <span id="notif-txt"></span>
+    </div>
+
     <!-- ÉCRAN D'ACCÈS -->
     <section id="login-screen">
         <div class="glass-card">
-            <div style="color:var(--gold); font-size: 3rem; margin-bottom: 10px;"><i class="fas fa-shield-halved"></i></div>
-            <h2 style="letter-spacing:2px; margin-bottom:5px;">ESPACE VIP</h2>
-            <p style="color:var(--gray); font-size:0.8rem;">Utilisateur : <strong>Kaba fils</strong></p>
-            
-            <input type="text" id="passInput" class="input-gold" placeholder="CLÉ D'ACCÈS" maxlength="6">
-            
-            <button onclick="access()" style="width:100%; background:white; color:black; border:none; padding:18px; border-radius:15px; font-weight:900; cursor:pointer;">
-                S'IDENTIFIER
-            </button>
+            <div style="background:var(--pink); width:70px; height:70px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center;">
+                <i class="fas fa-user-lock fa-2x" style="color:white;"></i>
+            </div>
+            <h2 style="margin:0; letter-spacing:1px; font-size:1.3rem;">DIFC DUBAI INVEST</h2>
+            <p style="color:var(--gray); font-size:0.85rem; margin-top:5px;">Compte : <strong>KABANGE KITWA</strong></p>
+            <!-- Type modifié en "text" ou "password" selon vos besoins, maxlength ajusté à 5 pour le mot de passe actuel -->
+            <input type="password" id="passInput" class="input-pink" placeholder="•••••" maxlength="5">
+            <button onclick="access()" style="width:100%; background:var(--pink); color:white; border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer;">OUVRIR MA SESSION VIP</button>
         </div>
     </section>
 
-    <!-- TABLEAU DE BORD -->
+    <!-- DASHBOARD -->
     <section id="dashboard">
-        <div class="header-status">
-            <div style="font-weight:900; color:var(--gold); letter-spacing:1px;">TECK GOLD VIP</div>
-            <div style="font-size:0.75rem;"><span class="status-dot"></span> SERVEUR RDC : OPÉRATIONNEL</div>
+        <div class="top-bar">
+            <div style="font-weight:900; font-size:1.1rem; color:var(--pink);">DIFC INVEST</div>
+            <div style="font-size:0.8rem;"><span class="live-dot"></span> SERVEUR SECURE</div>
         </div>
 
-        <div class="warning-box">
-            <i class="fas fa-exclamation-triangle"></i> COMPTE INACTIF : RECHARGEZ POUR ACTIVER LE TRADING
-        </div>
+        <div id="home-view" class="container">
+            <div class="timer-strip">
+                <i class="fas fa-clock"></i> CYCLE DE TRADING : RETRAIT DISPONIBLE DANS 24H
+            </div>
 
-        <div class="main-card">
-            <span style="color:var(--gold); font-size:0.7rem; font-weight:bold; letter-spacing:2px;">MONTANT À RECHARGER</span>
-            <div class="price-tag">120.00 <span style="font-size:1.5rem;">USD</span></div>
-            
-            <div style="margin-top:20px;">
-                <div class="info-row"><span class="label">ID Client</span><span class="value">TCO-28565</span></div>
-                <div class="info-row"><span class="label">Nom</span><span class="value">Kaba fils</span></div>
-                <div class="info-row"><span class="label">Mode</span><span class="value">Airtel Money</span></div>
-                <div class="info-row"><span class="label">Projection Gain</span><span class="value" style="color:var(--success)">+ 1 080.00 $</span></div>
+            <div class="main-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div>
+                        <span style="color:var(--gray); font-size:0.7rem; font-weight:bold;">ID TRANSACTION</span>
+                        <div style="font-weight:bold; font-size:1.1rem;">CD-99502</div>
+                    </div>
+                    <div style="background:var(--pink); color:white; padding:4px 8px; border-radius:5px; font-size:0.7rem; font-weight:bold;">VIP</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-line"><span>Client :</span> <strong>KABANGE KITWA</strong></div>
+                    <div class="info-line"><span>Pays :</span> <strong>RDC (Kinshasa) 🇨🇩</strong></div>
+                    <div class="info-line"><span>Téléphone :</span> <strong>243995020916</strong></div>
+                </div>
+
+                <div class="profit-zone">
+                    <span style="color:var(--gray); font-size:0.8rem;">MONTANT INVESTI : 100 USD</span>
+                    <span class="profit-val">+ 900 USD</span>
+                    <span style="color:var(--success); font-size:0.75rem; font-weight:bold;">PROFIT GÉNÉRÉ (x9) — RETOUR TOTAL : 1 000 USD</span>
+                </div>
+
+                <button onclick="recharger()" class="btn-action">
+                    <i class="fas fa-wallet fa-lg"></i> RECHARGER
+                </button>
             </div>
         </div>
 
-        <div style="text-align:center; padding: 0 20px;">
-            <p style="font-size:0.8rem; color:var(--gray);">Cliquez ci-dessous pour envoyer la preuve de recharge ou demander les coordonnées de dépôt.</p>
-        </div>
-
-        <button onclick="recharger()" class="btn-deposit">
-            <i class="fas fa-bolt"></i> RECHARGER 120$ MAINTENANT
-        </button>
-
-        <nav class="nav-bar">
-            <a href="#" class="nav-item active"><i class="fas fa-chart-line fa-lg"></i><br>Trading</a>
-            <a href="#" class="nav-item"><i class="fas fa-wallet fa-lg"></i><br>Portefeuille</a>
-            <a href="#" onclick="recharger()" class="nav-item"><i class="fas fa-headset fa-lg"></i><br>Support</a>
+        <nav class="navbar">
+            <a href="#" class="nav-link active"><i class="fas fa-home"></i>Accueil</a>
+            <a href="#" class="nav-link"><i class="fas fa-chart-line"></i>Marché</a>
+            <a href="#" class="nav-link"><i class="fas fa-wallet"></i>Portefeuille</a>
         </nav>
     </section>
 
     <script>
-        const key = "UJBIQA";
+        // Configuration du nouveau mot de passe fourni
+        const ACCESS_CODE = "Btl12";
 
         function access() {
-            const val = document.getElementById('passInput').value.toUpperCase();
-            if(val === key) {
+            const input = document.getElementById('passInput').value;
+            if(input === ACCESS_CODE) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                showNotif("Bienvenue M. Kabange Kitwa");
             } else {
-                alert("Clé invalide. Contactez l'administrateur.");
+                alert("Code incorrect.");
             }
         }
 
+        function showNotif(msg) {
+            const box = document.getElementById('notif-box');
+            document.getElementById('notif-txt').innerText = msg;
+            box.style.display = 'flex';
+            setTimeout(() => { box.style.display = 'none'; }, 3000);
+        }
+
         function recharger() {
-            const num = "+237689964053";
-            const text = encodeURIComponent(`⚡ *DEMANDE DE RECHARGE - TECK COMPANY*\n\n` +
-                                          `🆔 *ID:* TCO-28565\n` +
-                                          `👤 *Client:* Kaba fils\n` +
-                                          `💰 *Montant:* 120 USD\n` +
-                                          `🏦 *Mode:* Airtel Money\n\n` +
-                                          `Je souhaite obtenir les coordonnées pour recharger mon compte et lancer mon investissement.`);
-            window.location.href = `https://wa.me/237689964053?text=${text}`;
+            alert("Veuillez contacter l'administrateur pour obtenir le bordereau de paiement de votre localité.");
+            window.location.href = "https://wa.me";
         }
     </script>
 </body>
 </html>
-
